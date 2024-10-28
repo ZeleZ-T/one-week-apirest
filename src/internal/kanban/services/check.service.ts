@@ -24,7 +24,10 @@ export class CheckService {
     }
 
     async findOne(id: UUID) {
-        return await this.repository.findOneBy({ id: id });
+        return await this.repository.findOne({
+            where: { id: id },
+            relations: { task: true }
+        });
     }
 
     async update(id: UUID, title?: string, status?: boolean) {

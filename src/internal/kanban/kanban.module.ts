@@ -9,9 +9,18 @@ import { TaskService } from './services/task.service';
 import { CheckService } from './services/check.service';
 import { TaskController } from './controllers/task.controller';
 import { CheckController } from './controllers/check.controller';
+import { UsersModule } from '../users/users.module';
+import { AuthModule } from '../auth/auth.module';
+import { UsersService } from '../users/users.service';
+import { JwtService } from '../auth/jwt.service';
+
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Kanban, Task, Check])],
+    imports: [
+        TypeOrmModule.forFeature([Kanban, Task, Check]),
+        UsersModule,
+        AuthModule
+    ],
     providers: [KanbanService, TaskService, CheckService],
     controllers: [KanbanController, TaskController, CheckController],
 })

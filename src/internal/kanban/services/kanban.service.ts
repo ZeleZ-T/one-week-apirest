@@ -5,20 +5,26 @@ import { Kanban } from '../entities/kanban.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../../users/users.service';
+import { User } from '../../users/user.entity';
 
 @Injectable()
 export class KanbanService {
     constructor(
         @InjectRepository(Kanban)
         private repository: Repository<Kanban>,
+        private usersService: UsersService
     ) {}
 
-    async create(kanban: KanbanDto) {
-        return await this.repository.save(new Kanban().from(kanban));
+    async create(kanban: KanbanDto, email: string) {
+        const user = await this.usersService.findOne(email);
+        return await this.repository.save(new Kanban().from(kanban, user));
     }
 
     async findOne(id: UUID) {
-        return await this.repository.findOneBy({ id: id });
+        return await this.repository.findOne({
+            where: { id: id },
+            relations: { user: true, tasks: { checks: true }}
+        });
     }
 
     async update(id: UUID, title?: string, description?: string) {
