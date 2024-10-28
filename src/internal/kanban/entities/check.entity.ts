@@ -22,6 +22,6 @@ export class Check {
     @Column()
     status: boolean;
 
-    @ManyToOne(() => Task, task => task.checks)
+    @ManyToOne(() => Task, task => task.checks, { onDelete: 'CASCADE' })
     task: Task;
 }

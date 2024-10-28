@@ -31,6 +31,6 @@ export class Task {
     @OneToMany(() => Check, check => check.task)
     checks: Check[];
 
-    @ManyToOne(() => Kanban, kanban => kanban.tasks)
+    @ManyToOne(() => Kanban, kanban => kanban.tasks, { onDelete: 'CASCADE' })
     kanban: Kanban;
 }
