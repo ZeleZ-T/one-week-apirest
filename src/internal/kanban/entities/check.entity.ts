@@ -1,14 +1,15 @@
-import { Column, PrimaryColumn } from 'typeorm';
-import { ManyToOne } from 'typeorm/browser';
+import { Column, PrimaryColumn, ManyToOne, Entity } from 'typeorm';
 import { Task } from './task.entity';
 import { CheckDto } from '../dto/check.dto';
 import { randomUUID, UUID } from 'node:crypto';
 
+@Entity()
 export class Check {
-    public from(dto: CheckDto): Check {
+    public from(dto: CheckDto, task: Task): Check {
         this.id = randomUUID();
         this.title = dto.title;
         this.status = dto.status;
+        this.task = task;
         return this;
     }
 
