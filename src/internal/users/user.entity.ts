@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CreateUserDto } from './dto/user-create.dto';
+import { Kanban } from '../kanban/entities/kanban.entity';
 
 @Entity()
 export class User {
@@ -18,4 +19,7 @@ export class User {
 
     @Column()
     nickname: string;
+
+    @OneToMany(() => Kanban, kanban => kanban.user)
+    kanbans: Kanban[];
 }
