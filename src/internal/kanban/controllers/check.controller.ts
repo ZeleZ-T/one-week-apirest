@@ -25,6 +25,7 @@ export class CheckController {
             const newCheck = await this.service.create(check, task_id as UUID);
             return new CheckResponseDto().from(newCheck);
         }
+        else return new UnauthorizedException();
     }
 
     @Get()
@@ -37,6 +38,7 @@ export class CheckController {
             const checks = await this.service.findAllByTask(task_id as UUID);
             return checks.map(check => new CheckResponseDto().from(check));
         }
+        else return new UnauthorizedException();
     }
 
     @Get(':id')
@@ -49,6 +51,7 @@ export class CheckController {
             const output = await this.service.findOne(id as UUID);
             return new CheckResponseDto().from(output);
         }
+        else return new UnauthorizedException();
     }
 
     @Patch(':id')
@@ -60,6 +63,7 @@ export class CheckController {
     ) {
         if (await this.verify(token, kanban_id as UUID))
             return this.service.update(id as UUID, check.title, check.status);
+        else return new UnauthorizedException();
     }
 
     @Delete(':id')
@@ -70,15 +74,18 @@ export class CheckController {
     ) {
         if (await this.verify(token, kanban_id as UUID))
             return this.service.remove(id as UUID);
+        else return new UnauthorizedException();
     }
 
     private async verify(tokenHeader: string, kanban_id: UUID) {
+        try {
         const email = (await this.kanbanService.findOne(kanban_id)).user.email;
         const token = await this.jwt.getTokenFromHeaders(tokenHeader);
 
         if (await this.jwt.verify(token, email))
             return true;
         else
-            throw new UnauthorizedException();
+            return false;
+        } catch { return false; }
     }
 }

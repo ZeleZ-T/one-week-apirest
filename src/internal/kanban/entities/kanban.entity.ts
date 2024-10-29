@@ -27,6 +27,6 @@ export class Kanban {
     tasks: Task[];
 
     @JoinColumn()
-    @ManyToOne(() => User, user => user.kanbans)
+    @ManyToOne(() => User, user => user.kanbans, { onDelete: 'CASCADE' })
     user: User;
 }
