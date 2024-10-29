@@ -24,6 +24,7 @@ export class TaskController {
             const newTask = await this.service.create(task, kanban_id as UUID);
             return new TaskResponseDto().from(newTask);
         }
+        else return new UnauthorizedException();
     }
 
     @Get()
@@ -35,6 +36,7 @@ export class TaskController {
             const tasks = await this.service.findAllByKanban(kanban_id as UUID);
             return tasks.map(task => new TaskResponseDto().from(task));
         }
+        else return new UnauthorizedException();
     }
 
     @Get(':id')
@@ -47,6 +49,7 @@ export class TaskController {
             const task = await this.service.findOne(id as UUID);
             return new TaskResponseDto().from(task);
         }
+        else return new UnauthorizedException();
     }
 
     @Patch(':id')
@@ -58,6 +61,7 @@ export class TaskController {
     ) {
         if (await this.verify(token, kanban_id as UUID))
             return this.service.update(id as UUID, task.title, task.description, task.status);
+        else return new UnauthorizedException();
     }
 
     @Delete(':id')
@@ -68,15 +72,18 @@ export class TaskController {
     ) {
         if (await this.verify(token, kanban_id as UUID))
             return this.service.remove(id as UUID);
+        else return new UnauthorizedException();
     }
 
     private async verify(tokenHeader: string, kanban_id: UUID) {
+        try {
         const email = (await this.kanbanService.findOne(kanban_id)).user.email;
         const token = await this.jwt.getTokenFromHeaders(tokenHeader);
 
         if (await this.jwt.verify(token, email))
             return true;
         else
-            throw new UnauthorizedException();
+            return false;
+        } catch { return false; }
     }
 }
