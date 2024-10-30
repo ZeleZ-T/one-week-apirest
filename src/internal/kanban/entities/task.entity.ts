@@ -10,8 +10,8 @@ export class Task {
         this.id = randomUUID();
         this.title = task.title;
         this.description = task.description;
-        this.kanban = kanban;
         this.status = task.status;
+        this.kanban = kanban;
 
         return this;
     }
@@ -22,11 +22,14 @@ export class Task {
     @Column()
     title: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
     @Column()
     status: string;
+
+    @Column({ nullable: true })
+    image: string;
 
     @OneToMany(() => Check, check => check.task)
     checks: Check[];

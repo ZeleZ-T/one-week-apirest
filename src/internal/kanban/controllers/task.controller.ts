@@ -1,10 +1,24 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Headers, UnauthorizedException } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Headers,
+    UnauthorizedException,
+    UseInterceptors, UploadedFile,
+} from '@nestjs/common';
 import { UUID } from 'node:crypto';
 import { TaskService } from '../services/task.service';
 import { TaskDto } from '../dto/task.dto';
 import { JwtService } from '../../auth/jwt.service';
 import { KanbanService } from '../services/kanban.service';
 import { TaskResponseDto } from '../dto/task-response.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import multer from 'multer';
+import * as process from 'node:process';
 
 @Controller('kanban/:kanban_id/task')
 export class TaskController {
@@ -62,6 +76,29 @@ export class TaskController {
         if (await this.verify(token, kanban_id as UUID))
             return this.service.update(id as UUID, task.title, task.description, task.status);
         else return new UnauthorizedException();
+    }
+
+    @Patch(':id/image')
+    @UseInterceptors(FileInterceptor( 'image', {
+        storage: require('multer').diskStorage(
+            {
+                destination: './UserTaskImages',
+                filename: function (req, file, cb) {
+                    file.filename = `${req.params.id}.jpg`;
+                    cb(null, file.filename);
+                }
+            }
+        )
+    }))
+    async updateImage(
+        @Param('id') id: string,
+        @Param('kanban_id') kanban_id: string,
+        @Headers('Authorization') token: string,
+        @UploadedFile() image: Express.Multer.File
+    ) {
+        if (await this.verify(token, kanban_id as UUID)) {
+            return this.service.updateImage(id as UUID, image);
+        } else return new UnauthorizedException();
     }
 
     @Delete(':id')
