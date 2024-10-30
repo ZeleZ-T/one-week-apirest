@@ -1,3 +1,29 @@
+# One-Week-APIRest
+
+A RESTful API built in one week using the NestJS framework, designed to provide robust and scalable server-side applications for a kanban service.
+Can create kanbans add tasks to them and move them between columns/status. Each task can have sub checkables to do fields, and each task can have an uploaded by the user image.
+
+This challenge was made for autolearning purposes, to learn how to use the NestJS framework and to learn how to create a RESTful API in these framework and technologies.
+
+## Features and technologies
+
+- **REST API**: Provides a structured approach to creating RESTful endpoints.
+- **NestJS Framework**: Built with NestJS for maintainability and scalability.
+- **CRUD Operations**: Basic create, read, update, and delete functionality.
+- **User Authentication**: Secure user authentication using JWT tokens.
+- **PostgreSQL Database**: Uses a PostgreSQL database for data storage.
+- **TypeScript**: Written in TypeScript for type safety and maintainability.
+- **Docker**: Containerized using Docker for easy deployment and scaling.
+- **Docker Compose**: Docker Compose for local development.
+- **Environment Variables**: Configuration using environment variables.
+- **Dependency Injection**: Utilizes NestJS dependency injection.
+- **Scalability**: Designed for scalability and maintainability.
+
+#
+#
+
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
