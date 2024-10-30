@@ -20,7 +20,7 @@ export class Kanban {
     @Column()
     title: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
     @OneToMany(() => Task, task => task.kanban)

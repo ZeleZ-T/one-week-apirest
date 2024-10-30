@@ -7,6 +7,7 @@ export class TaskResponseDto {
     title: string;
     description: string;
     status: string;
+    image: string;
     checks: CheckResponseDto[];
     parent: ParentDto;
 
@@ -15,6 +16,7 @@ export class TaskResponseDto {
         this.title = task.title;
         this.description = task.description;
         this.status = task.status;
+        this.image = task.image;
         this.checks = task.checks?.map(check => new CheckResponseDto().from(check));
         this.parent = task.kanban ? new ParentDto().from(task.kanban)  : undefined;
         return this;

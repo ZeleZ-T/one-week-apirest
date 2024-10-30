@@ -34,6 +34,10 @@ export class TaskService {
         return await this.repository.update(id, { title, description, status});
     }
 
+    async updateImage(id: UUID, image: Express.Multer.File) {
+        return await this.repository.update(id, { image: image.filename });
+    }
+
     async remove(id: UUID) {
         return await this.repository.delete({ id: id });
     }
